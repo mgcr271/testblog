@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>Ramnath</title>
+ <link href="http://github.com/ramnathv/atom.xml" rel="self"/>
+ <link href="http://github.com/ramnathv/"/>
+ <updated>2014-01-30T09:58:56-05:00</updated>
+ <id>http://github.com/ramnathv</id>
+ <author>
+   <name>Ramnath Vaidyanathan</name>
+   <email></email>
+ </author>
+
+ 
+ <entry>
+   <title>Animated Choropleths</title>
+   <link href="http://github.com/ramnathv/blog/animated-choropleths"/>
+   <updated>2014-01-24T00:00:00-05:00</updated>
+   <id>http://github.com/ramnathv/blog/animated-choropleths</id>
+   <content type="html">&lt;p&gt;This post is motivated by a recent article by Vivek Patil, where he showed various ways to generate and animate choropleth maps from R. &lt;/p&gt;
+
+&lt;h2&gt;Get Data&lt;/h2&gt;
+
+&lt;p&gt;Let us fetch data from &lt;a href=&quot;http://www.quandl.com/&quot;&gt;Quandl&lt;/a&gt;, which is an excellent source of fascinating datasets. I would strongly recommend that you check it out, if you haven&amp;#39;t already :). &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;r language-r&quot; data-lang=&quot;r&quot;&gt;library&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;Quandl&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+vcData &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Quandl&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;FBI_UCR/USCRIME_TYPE_VIOLENTCRIMERATE&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+kable&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;head&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;vcData&lt;span class=&quot;p&quot;&gt;[,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; format &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;html&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;table class=&quot;table table-striped table-condensed non-fluid&quot;&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th&gt; Year &lt;/th&gt;
+   &lt;th&gt; Alabama &lt;/th&gt;
+   &lt;th&gt; Alaska &lt;/th&gt;
+   &lt;th&gt; Arizona &lt;/th&gt;
+   &lt;th&gt; Arkansas &lt;/th&gt;
+   &lt;th&gt; California &lt;/th&gt;
+   &lt;th&gt; Colorado &lt;/th&gt;
+   &lt;th&gt; Connecticut &lt;/th&gt;
+   &lt;th&gt; Delaware &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2010-12-31 &lt;/td&gt;
+   &lt;td&gt; 377.8 &lt;/td&gt;
+   &lt;td&gt; 638.8 &lt;/td&gt;
+   &lt;td&gt; 408.1 &lt;/td&gt;
+   &lt;td&gt; 505.3 &lt;/td&gt;
+   &lt;td&gt; 440.6 &lt;/td&gt;
+   &lt;td&gt; 320.8 &lt;/td&gt;
+   &lt;td&gt; 281.4 &lt;/td&gt;
+   &lt;td&gt; 620.9 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2009-12-31 &lt;/td&gt;
+   &lt;td&gt; 450.1 &lt;/td&gt;
+   &lt;td&gt; 633.4 &lt;/td&gt;
+   &lt;td&gt; 426.5 &lt;/td&gt;
+   &lt;td&gt; 515.8 &lt;/td&gt;
+   &lt;td&gt; 473.3 &lt;/td&gt;
+   &lt;td&gt; 338.8 &lt;/td&gt;
+   &lt;td&gt; 300.9 &lt;/td&gt;
+   &lt;td&gt; 645.4 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2008-12-31 &lt;/td&gt;
+   &lt;td&gt; 451.3 &lt;/td&gt;
+   &lt;td&gt; 650.9 &lt;/td&gt;
+   &lt;td&gt; 481.2 &lt;/td&gt;
+   &lt;td&gt; 504.6 &lt;/td&gt;
+   &lt;td&gt; 506.2 &lt;/td&gt;
+   &lt;td&gt; 347.1 &lt;/td&gt;
+   &lt;td&gt; 306.5 &lt;/td&gt;
+   &lt;td&gt; 706.1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2007-12-31 &lt;/td&gt;
+   &lt;td&gt; 447.9 &lt;/td&gt;
+   &lt;td&gt; 662.3 &lt;/td&gt;
+   &lt;td&gt; 514.5 &lt;/td&gt;
+   &lt;td&gt; 532.6 &lt;/td&gt;
+   &lt;td&gt; 522.6 &lt;/td&gt;
+   &lt;td&gt; 350.6 &lt;/td&gt;
+   &lt;td&gt; 301.1 &lt;/td&gt;
+   &lt;td&gt; 711.5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2006-12-31 &lt;/td&gt;
+   &lt;td&gt; 425.2 &lt;/td&gt;
+   &lt;td&gt; 686.8 &lt;/td&gt;
+   &lt;td&gt; 545.4 &lt;/td&gt;
+   &lt;td&gt; 557.2 &lt;/td&gt;
+   &lt;td&gt; 533.3 &lt;/td&gt;
+   &lt;td&gt; 394.8 &lt;/td&gt;
+   &lt;td&gt; 298.6 &lt;/td&gt;
+   &lt;td&gt; 701.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2005-12-31 &lt;/td&gt;
+   &lt;td&gt; 433.0 &lt;/td&gt;
+   &lt;td&gt; 632.0 &lt;/td&gt;
+   &lt;td&gt; 512.0 &lt;/td&gt;
+   &lt;td&gt; 528.0 &lt;/td&gt;
+   &lt;td&gt; 526.0 &lt;/td&gt;
+   &lt;td&gt; 397.0 &lt;/td&gt;
+   &lt;td&gt; 273.0 &lt;/td&gt;
+   &lt;td&gt; 633.0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2&gt;Reshape Data&lt;/h2&gt;
+
+&lt;p&gt;Our dataset is in the wide-form. So let us first convert it into the long-form, as it is usually more convenient for visualization purposes. We remove data for the US as a whole, as well as for DC, so that the crime rates are comparable. &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;r language-r&quot; data-lang=&quot;r&quot;&gt;library&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;reshape2&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+datm &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; melt&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;vcData&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Year&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+  variable.name &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;State&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  value.name &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Crime&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+datm &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; subset&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;na.omit&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;datm&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; 
+  &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;State &lt;span class=&quot;o&quot;&gt;%in%&lt;/span&gt; c&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;United States&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;District of Columbia&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+kable&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;head&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;datm&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; format &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;html&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;table class=&quot;table table-striped table-condensed non-fluid&quot;&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th&gt; Year &lt;/th&gt;
+   &lt;th&gt; State &lt;/th&gt;
+   &lt;th&gt; Crime &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2010-12-31 &lt;/td&gt;
+   &lt;td&gt; Alabama &lt;/td&gt;
+   &lt;td&gt; 377.8 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2009-12-31 &lt;/td&gt;
+   &lt;td&gt; Alabama &lt;/td&gt;
+   &lt;td&gt; 450.1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2008-12-31 &lt;/td&gt;
+   &lt;td&gt; Alabama &lt;/td&gt;
+   &lt;td&gt; 451.3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2007-12-31 &lt;/td&gt;
+   &lt;td&gt; Alabama &lt;/td&gt;
+   &lt;td&gt; 447.9 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2006-12-31 &lt;/td&gt;
+   &lt;td&gt; Alabama &lt;/td&gt;
+   &lt;td&gt; 425.2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2005-12-31 &lt;/td&gt;
+   &lt;td&gt; Alabama &lt;/td&gt;
+   &lt;td&gt; 433.0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;hr&gt;
+
+&lt;h2&gt;Discretize Crime Rates&lt;/h2&gt;
+
+&lt;p&gt;For choropleth maps, we would like to discretize crime rates. We do this by dividing crime rates into sextiles. &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;r language-r&quot; data-lang=&quot;r&quot;&gt;datm2 &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; transform&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;datm&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  State &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; state.abb&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;match&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;as.character&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;State&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; state.name&lt;span class=&quot;p&quot;&gt;)],&lt;/span&gt;
+  fillKey &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; cut&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;Crime&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; quantile&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;Crime&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; seq&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; labels &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; LETTERS&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;
+  Year &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.numeric&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;substr&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;Year&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+kable&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;head&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;datm2&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; format &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;html&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;table class=&quot;table table-striped table-condensed non-fluid&quot;&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th&gt; Year &lt;/th&gt;
+   &lt;th&gt; State &lt;/th&gt;
+   &lt;th&gt; Crime &lt;/th&gt;
+   &lt;th&gt; fillKey &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2010 &lt;/td&gt;
+   &lt;td&gt; AL &lt;/td&gt;
+   &lt;td&gt; 377.8 &lt;/td&gt;
+   &lt;td&gt; C &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2009 &lt;/td&gt;
+   &lt;td&gt; AL &lt;/td&gt;
+   &lt;td&gt; 450.1 &lt;/td&gt;
+   &lt;td&gt; C &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2008 &lt;/td&gt;
+   &lt;td&gt; AL &lt;/td&gt;
+   &lt;td&gt; 451.3 &lt;/td&gt;
+   &lt;td&gt; C &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2007 &lt;/td&gt;
+   &lt;td&gt; AL &lt;/td&gt;
+   &lt;td&gt; 447.9 &lt;/td&gt;
+   &lt;td&gt; C &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2006 &lt;/td&gt;
+   &lt;td&gt; AL &lt;/td&gt;
+   &lt;td&gt; 425.2 &lt;/td&gt;
+   &lt;td&gt; C &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt; 2005 &lt;/td&gt;
+   &lt;td&gt; AL &lt;/td&gt;
+   &lt;td&gt; 433.0 &lt;/td&gt;
+   &lt;td&gt; C &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;hr&gt;
+
+&lt;h2&gt;Choose Fill Colors&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;r language-r&quot; data-lang=&quot;r&quot;&gt;library&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;RColorBrewer&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+fills &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.list&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;setNames&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;rev&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;brewer.pal&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;PiYG&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; LETTERS&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+
+&lt;h2&gt;Create Payload for DataMaps&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;r language-r&quot; data-lang=&quot;r&quot;&gt;library&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;plyr&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+library&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;rCharts&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+options&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;rcharts.cdn &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+dat2 &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; dlply&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;datm2&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Year&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+  y &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; toJSONArray2&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;x&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; json &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k-Variable&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  names&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;y&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; lapply&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;y&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;[[&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;State&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;kr&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;y&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+
+&lt;h2&gt;Create Simple Choropleth&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;r language-r&quot; data-lang=&quot;r&quot;&gt;map &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; Datamaps&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;new&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+map&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;set&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  dom &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;chart_1&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  scope &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;usa&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  fills &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; fills&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  data &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; dat2&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]],&lt;/span&gt;
+  legend &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  labels &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;TRUE&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+map
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;iframe src='/assets/images/simplechoro.html' scrolling='no' seamless
+class='rChart datamaps '
+id=iframe-
+chart_1
+&gt;&lt;/iframe&gt;
+
+&lt;style&gt;iframe.rChart{ width: 100%; height: 400px;}&lt;/style&gt;
+
+&lt;hr&gt;
+
+&lt;h2&gt;Animated Choropleth&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;r language-r&quot; data-lang=&quot;r&quot;&gt;map&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;set&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  bodyattrs &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;ng-app ng-controller=&amp;#39;rChartsCtrl&amp;#39;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+map&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;addAssets&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+ jshead &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+map&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;setTemplate&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;chartDiv &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; sprintf&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;  &amp;lt;div class=&amp;#39;container&amp;#39;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    &amp;lt;input id=&amp;#39;slider&amp;#39; type=&amp;#39;range&amp;#39; min=1960 max=2010 ng-model=&amp;#39;year&amp;#39; width=200&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;    &amp;lt;div id=&amp;#39;chart_1&amp;#39; class=&amp;#39;rChart datamaps&amp;#39;&amp;gt;&amp;lt;/div&amp;gt;  &lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;  &amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;  &amp;lt;script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    var newData = %s&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    function rChartsCtrl($scope){&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      $scope.year = 1960;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      $scope.$watch(&amp;#39;year&amp;#39;, function(newYear){&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;        mapchart_1.updateChoropleth(newData[newYear]);&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      })&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    }&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;  &amp;lt;/script&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; rjson&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;toJSON&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;dat2&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+map
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;iframe src='/assets/images/choro.html' scrolling='no' seamless class='rChart datamaps ' 
+  id=iframe-chart_1&gt;&lt;/iframe&gt;
+
+&lt;style&gt;iframe.rChart{ width: 100%; height: 400px;}&lt;/style&gt;
+
+&lt;style&gt;
+  iframe.rChart {height: 500px;} 
+  ol.linenums {margin-left: -5px;}
+  table.non-fluid {width: auto; margin: 0 auto;}
+&lt;/style&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Thinny 2: a Jekyll theme</title>
+   <link href="http://github.com/ramnathv/blog/thinny-2"/>
+   <updated>2014-01-22T00:00:00-05:00</updated>
+   <id>http://github.com/ramnathv/blog/thinny-2</id>
+   <content type="html">&lt;p&gt;Three months ago, I released an (unfinished) theme for Ghost 0.3: &lt;a href=&quot;http://github.com/camporez/Thinny&quot;&gt;Thinny 0.3&lt;/a&gt;, codename &amp;quot;&lt;a href=&quot;http://nikita2010.wikia.com/wiki/Alexandra_Udinov&quot;&gt;Alexandra&lt;/a&gt;&amp;quot;.
+But now I&amp;#39;m migrating my blog to Jekyll, and also migrating the theme. With a brand new look, Thinny 2 also brings a lot of new features and polishment. Actually, it was completely remaked.&lt;/p&gt;
+
+&lt;h1&gt;Thinny 2.0, codename &amp;quot;&lt;a href=&quot;http://memoriaglobo.globo.com/programas/entretenimento/novelas/caras-bocas/caras-bocas-bianca-isabelle-drummond.htm&quot;&gt;Bianca&lt;/a&gt;&amp;quot;&lt;/h1&gt;
+
+&lt;p&gt;This new version of Thinny goes deeper with the &lt;a href=&quot;http://ghost-camporez.rhcloud.com/making-applications-icon-smaller-on-gnome-shells-top-panel/&quot;&gt;initial idea&lt;/a&gt; of a big image before the post. As the saying goes, &lt;cite&gt;a picture is worth a thousand words&lt;/cite&gt;, so we expanded the concept. I mean, literally. The post image (or video!) is now full width and full height, and can be easily add with the use of a variable.&lt;/p&gt;
+
+&lt;h2&gt;Features&lt;/h2&gt;
+
+&lt;h3&gt;Lists and text formatting&lt;/h3&gt;
+
+&lt;p&gt;You can use various HTML tags:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;To bold text&lt;/strong&gt;, use &lt;code&gt;&amp;lt;strong&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;To italicize text&lt;/em&gt;, use &lt;code&gt;&amp;lt;em&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Abbreviations, like &lt;abbr title=&quot;HyperText Markup Langage&quot;&gt;HTML&lt;/abbr&gt; should use &lt;code&gt;&amp;lt;abbr&amp;gt;&lt;/code&gt;, with an optional &lt;code&gt;title&lt;/code&gt; attribute for the full phrase.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Citations, like &lt;cite&gt;&amp;mdash; Ramnath&lt;/cite&gt;, should use &lt;code&gt;&amp;lt;cite&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;del&gt;Deleted&lt;/del&gt; text should use &lt;code&gt;&amp;lt;del&amp;gt;&lt;/code&gt; and &lt;ins&gt;inserted&lt;/ins&gt; text should use &lt;code&gt;&amp;lt;ins&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Superscript &lt;sup&gt;text&lt;/sup&gt; uses &lt;code&gt;&amp;lt;sup&amp;gt;&lt;/code&gt; and subscript &lt;sub&gt;text&lt;/sub&gt; uses &lt;code&gt;&amp;lt;sub&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;Messages, code and images&lt;/h3&gt;
+
+&lt;div class=&quot;message&quot;&gt;This is a &lt;strong&gt;warning&lt;/strong&gt; message. Now, you can keep falling in love with this theme...&lt;/div&gt;
+
+&lt;p&gt;You can add &lt;code&gt;code elements&lt;/code&gt; with highlight support:
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;/media/2014-01-22-thinny-2/bianca.jpg&amp;quot;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;100&amp;#37;&amp;quot;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Image captions are supported out of the box. Brilliant!&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;Will output this:&lt;/p&gt;
+
+&lt;div&gt;&lt;img src=&quot;/media/2014-01-22-thinny-2/bianca.jpg&quot; alt=&quot;Image captions are supported out of the box. Brilliant!&quot; width=&quot;100%&quot; /&gt;
+&lt;blockquote style=&quot;border-left: 10px solid #D5D5D5;&quot;&gt;Image captions are supported out of the box. Brilliant!&lt;/blockquote&gt;&lt;/div&gt;
+
+&lt;h3&gt;Table&lt;/h3&gt;
+
+&lt;p&gt;Thinny also support html tag &lt;code&gt;&amp;lt;table&amp;gt;&lt;/code&gt;:
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Version&lt;/th&gt;
+      &lt;th&gt;Codename&lt;/th&gt;
+      &lt;th&gt;Platform&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;a href=&quot;https://github.com/camporez/Thinny/releases/tag/v0.3-alexandra&quot;&gt;0.3&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;http://nikita2010.wikia.com/wiki/Alexandra_Udinov&quot;&gt;Alexandra&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;Ghost 0.3.x&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;a href=&quot;https://github.com/camporez/Thinny/releases/tag/v2.0-bianca&quot;&gt;2.0&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;http://memoriaglobo.globo.com/programas/entretenimento/novelas/caras-bocas/caras-bocas-bianca-isabelle-drummond.htm&quot;&gt;Bianca&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;Jekyll&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2.1&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;http://lesmiserables.wikia.com/wiki/Cosette&quot;&gt;Cosette&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;Jekyll&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;&lt;/p&gt;
+
+&lt;h3&gt;Mobile version&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Coming soon...&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3&gt;Quote&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Did you liked it? You can &lt;a href=&quot;https://github.com/camporez/Thinny/releases&quot;&gt;download Thinny on GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;Want to see something else added? &lt;a href=&quot;https://github.com/camporez/camporez.github.io/issues/new&quot;&gt;Open an issue&lt;/a&gt;.&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>
