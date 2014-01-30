@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>Ramnath</title>
- <link href="//atom.xml" rel="self"/>
- <link href="//"/>
- <updated>2014-01-30T10:25:45-05:00</updated>
- <id>/</id>
+ <link href="/atom.xml" rel="self"/>
+ <link href="/"/>
+ <updated>2014-01-30T10:44:03-05:00</updated>
+ <id></id>
  <author>
    <name>Ramnath Vaidyanathan</name>
    <email></email>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>Animated Choropleths</title>
-   <link href="//animated-choropleths"/>
+   <link href="/animated-choropleths"/>
    <updated>2014-01-24T00:00:00-05:00</updated>
-   <id>//animated-choropleths</id>
+   <id>/animated-choropleths</id>
    <content type="html">&lt;p&gt;This post is motivated by a recent article by Vivek Patil, where he showed various ways to generate and animate choropleth maps from R. &lt;/p&gt;
 
 &lt;h2&gt;Get Data&lt;/h2&gt;
@@ -308,9 +308,9 @@ map
  
  <entry>
    <title>Thinny 2: a Jekyll theme</title>
-   <link href="//thinny-2"/>
+   <link href="/thinny-2"/>
    <updated>2014-01-22T00:00:00-05:00</updated>
-   <id>//thinny-2</id>
+   <id>/thinny-2</id>
    <content type="html">&lt;p&gt;Three months ago, I released an (unfinished) theme for Ghost 0.3: &lt;a href=&quot;http://github.com/camporez/Thinny&quot;&gt;Thinny 0.3&lt;/a&gt;, codename &amp;quot;&lt;a href=&quot;http://nikita2010.wikia.com/wiki/Alexandra_Udinov&quot;&gt;Alexandra&lt;/a&gt;&amp;quot;.
 But now I&amp;#39;m migrating my blog to Jekyll, and also migrating the theme. With a brand new look, Thinny 2 also brings a lot of new features and polishment. Actually, it was completely remaked.&lt;/p&gt;
 

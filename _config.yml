@@ -9,7 +9,7 @@ permalink:	/:title
 title:		Ramnath
 tagline:	'blog'
 description:	'Random Ramblings'
-url:		"http://mgcr271.github.io/testblog/"
+url:		"/testblog"
 
 author:
   name:		'Ramnath Vaidyanathan'

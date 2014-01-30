@@ -2,7 +2,7 @@
 layout: post
 title: "Animated Choropleths"
 quote: rMaps and DataMaps make it easy to create animated choropleths!
-image: "http://upload.wikimedia.org/wikipedia/commons/2/2e/Huntington_wv.jpg"
+image: "assets/images/choropleths.jpg"
 video: false
 ---
 
@@ -279,7 +279,7 @@ map$set(
 map
 ```
 
-<iframe src='{{site.url}}assets/images/simplechoro.html' scrolling='no' seamless
+<iframe src='{{site.url}}/assets/images/simplechoro.html' scrolling='no' seamless
 class='rChart datamaps '
 id=iframe-
 chart_1
@@ -318,7 +318,7 @@ map$setTemplate(chartDiv = sprintf("
 map
 ```
 
-<iframe src='{{site.url}}assets/images/choro.html' scrolling='no' seamless class='rChart datamaps ' 
+<iframe src='{{site.url}}/assets/images/choro.html' scrolling='no' seamless class='rChart datamaps ' 
   id=iframe-chart_1></iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 
