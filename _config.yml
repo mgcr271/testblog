@@ -3,13 +3,13 @@ markdown:	redcarpet
 pygments:	true
 
 # Permalinks
-permalink:	/blog/:title
+permalink:	/:title
 
 # Setup
 title:		Ramnath
 tagline:	'blog'
 description:	'Random Ramblings'
-url:		http://github.com/ramnathv
+url:		"http://mgcr271.github.io/testblog"
 
 author:
   name:		'Ramnath Vaidyanathan'

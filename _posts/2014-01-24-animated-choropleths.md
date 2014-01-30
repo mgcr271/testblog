@@ -279,7 +279,7 @@ map$set(
 map
 ```
 
-<iframe src='/assets/images/simplechoro.html' scrolling='no' seamless
+<iframe src='{{site.url}}assets/images/simplechoro.html' scrolling='no' seamless
 class='rChart datamaps '
 id=iframe-
 chart_1
@@ -318,7 +318,7 @@ map$setTemplate(chartDiv = sprintf("
 map
 ```
 
-<iframe src='/assets/images/choro.html' scrolling='no' seamless class='rChart datamaps ' 
+<iframe src='{{site.url}}assets/images/choro.html' scrolling='no' seamless class='rChart datamaps ' 
   id=iframe-chart_1></iframe>
 <style>iframe.rChart{ width: 100%; height: 400px;}</style>
 
